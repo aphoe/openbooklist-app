@@ -1,5 +1,6 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:toastification/toastification.dart';
 import '../../components/forms/text_input.dart';
 import '../../components/forms/password_input.dart';
@@ -20,10 +21,30 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
+  static const _storage = FlutterSecureStorage();
+
   final _formKey = GlobalKey<FormState>();
   final _baseUrlController = TextEditingController();
   final _tokenController = TextEditingController();
   bool _isLoading = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _redirectIfLoggedIn();
+  }
+
+  Future<void> _redirectIfLoggedIn() async {
+    final baseUrl = await _storage.read(key: 'baseUrl');
+    final authToken = await _storage.read(key: 'authToken');
+    if (!mounted) return;
+    if (baseUrl != null && baseUrl.isNotEmpty &&
+        authToken != null && authToken.isNotEmpty) {
+      Navigator.of(context).pushReplacement(
+        MaterialPageRoute<void>(builder: (_) => const BookmarksScreen()),
+      );
+    }
+  }
 
   @override
   void dispose() {
