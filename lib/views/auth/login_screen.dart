@@ -1,3 +1,4 @@
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import '../../components/forms/text_input.dart';
 import '../../components/forms/password_input.dart';
@@ -6,6 +7,7 @@ import 'package:url_launcher/url_launcher.dart';
 import '../../constants/constants.dart';
 import '../../theme/app_colors.dart';
 import '../../theme/app_text.dart';
+import 'lost_screen.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -25,6 +27,12 @@ class _LoginScreenState extends State<LoginScreen> {
     _baseUrlController.dispose();
     _tokenController.dispose();
     super.dispose();
+  }
+
+  void _onLostTap() {
+    Navigator.of(context).push(
+      MaterialPageRoute<void>(builder: (_) => const LostScreen()),
+    );
   }
 
   Future<void> _onSubmit() async {
@@ -60,6 +68,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       tokenController: _tokenController,
                       isLoading: _isLoading,
                       onSubmit: _onSubmit,
+                      onLostTap: _onLostTap,
                     ),
                     const SizedBox(height: 32),
                     const _Footer(),
@@ -110,6 +119,7 @@ class _LoginCard extends StatelessWidget {
     required this.tokenController,
     required this.isLoading,
     required this.onSubmit,
+    required this.onLostTap,
   });
 
   final GlobalKey<FormState> formKey;
@@ -117,6 +127,7 @@ class _LoginCard extends StatelessWidget {
   final TextEditingController tokenController;
   final bool isLoading;
   final VoidCallback onSubmit;
+  final VoidCallback onLostTap;
 
   @override
   Widget build(BuildContext context) {
@@ -199,9 +210,59 @@ class _LoginCard extends StatelessWidget {
               onPressed: onSubmit,
               isLoading: isLoading,
             ),
+            const SizedBox(height: 24),
+            Center(child: _LostHint(onTap: onLostTap)),
           ],
         ),
       ),
+    );
+  }
+}
+
+class _LostHint extends StatefulWidget {
+  const _LostHint({required this.onTap});
+
+  final VoidCallback onTap;
+
+  @override
+  State<_LostHint> createState() => _LostHintState();
+}
+
+class _LostHintState extends State<_LostHint> {
+  late final TapGestureRecognizer _recognizer;
+
+  @override
+  void initState() {
+    super.initState();
+    _recognizer = TapGestureRecognizer()..onTap = widget.onTap;
+  }
+
+  @override
+  void dispose() {
+    _recognizer.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Text.rich(
+      TextSpan(
+        style: AppTextStyles.bodySmall.copyWith(color: AppColors.textMuted),
+        children: [
+          const TextSpan(text: 'What is this? '),
+          TextSpan(
+            text: 'I am lost',
+            style: AppTextStyles.bodySmall.copyWith(
+              color: AppColors.primary,
+              fontWeight: FontWeight.w700,
+              decoration: TextDecoration.underline,
+              decorationColor: AppColors.primary,
+            ),
+            recognizer: _recognizer,
+          ),
+        ],
+      ),
+      textAlign: TextAlign.center,
     );
   }
 }
