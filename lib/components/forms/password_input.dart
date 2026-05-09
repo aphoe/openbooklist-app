@@ -95,6 +95,10 @@ class _PasswordInputState extends State<PasswordInput> {
                 width: 2,
               ),
             ),
+            errorStyle: AppTextStyles.bodySmall.copyWith(
+              color: AppColors.danger,
+              fontWeight: FontWeight.w400,
+            ),
             errorBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(8),
               borderSide: const BorderSide(color: AppColors.danger),

@@ -1,12 +1,15 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:toastification/toastification.dart';
 import '../../components/forms/text_input.dart';
 import '../../components/forms/password_input.dart';
 import '../../components/forms/primary_button.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../../constants/constants.dart';
+import '../../controllers/auth_controller.dart';
 import '../../theme/app_colors.dart';
 import '../../theme/app_text.dart';
+import '../bookmarks/bookmarks_screen.dart';
 import 'lost_screen.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -30,17 +33,38 @@ class _LoginScreenState extends State<LoginScreen> {
   }
 
   void _onLostTap() {
-    Navigator.of(context).push(
-      MaterialPageRoute<void>(builder: (_) => const LostScreen()),
-    );
+    Navigator.of(
+      context,
+    ).push(MaterialPageRoute<void>(builder: (_) => const LostScreen()));
   }
 
   Future<void> _onSubmit() async {
     if (!(_formKey.currentState?.validate() ?? false)) return;
     setState(() => _isLoading = true);
-    // TODO: replace stub with actual auth logic
-    await Future<void>.delayed(const Duration(seconds: 2));
-    if (mounted) setState(() => _isLoading = false);
+
+    final error = await AuthController().login(
+      baseUrl: _baseUrlController.text.trim(),
+      token: _tokenController.text.trim(),
+    );
+
+    if (!mounted) return;
+    setState(() => _isLoading = false);
+
+    if (error == null) {
+      Navigator.of(context).pushReplacement(
+        MaterialPageRoute<void>(builder: (_) => const BookmarksScreen()),
+      );
+      return;
+    }
+
+    toastification.show(
+      context: context,
+      type: ToastificationType.error,
+      title: const Text('Login Failed'),
+      description: Text(error),
+      autoCloseDuration: const Duration(seconds: 4),
+      style: ToastificationStyle.fillColored,
+    );
   }
 
   @override
