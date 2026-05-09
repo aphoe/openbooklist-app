@@ -2,6 +2,7 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:toastification/toastification.dart';
+import '../../services/display_service.dart';
 import '../../components/forms/text_input.dart';
 import '../../components/forms/password_input.dart';
 import '../../components/forms/primary_button.dart';
@@ -78,13 +79,11 @@ class _LoginScreenState extends State<LoginScreen> {
       return;
     }
 
-    toastification.show(
-      context: context,
+    DisplayService.showToast(
+      context,
       type: ToastificationType.error,
-      title: const Text('Login Failed'),
-      description: Text(error),
-      autoCloseDuration: const Duration(seconds: 4),
-      style: ToastificationStyle.fillColored,
+      title: 'Login Failed',
+      message: error,
     );
   }
 
