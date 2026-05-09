@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>OpenBookList - Bookmarks</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&amp;family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+        rel="stylesheet" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+        rel="stylesheet" />
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "surface-bright": "#f8f9ff",
+                        "tertiary-fixed": "#6ffbbe",
+                        "on-surface-variant": "#464553",
+                        "on-primary": "#ffffff",
+                        "on-error": "#ffffff",
+                        "on-secondary-fixed": "#111c2d",
+                        "on-tertiary-container": "#2dc68d",
+                        "primary-container": "#3730a3",
+                        "error-container": "#ffdad6",
+                        "tertiary-container": "#004d33",
+                        "on-secondary-fixed-variant": "#3c475a",
+                        "secondary-fixed-dim": "#bcc7de",
+                        "background": "#f8f9ff",
+                        "surface-tint": "#544fc0",
+                        "surface-container-low": "#eff4ff",
+                        "inverse-surface": "#213145",
+                        "surface-container-lowest": "#ffffff",
+                        "secondary-container": "#d5e0f8",
+                        "secondary": "#545f73",
+                        "on-secondary-container": "#586377",
+                        "primary": "#1f108e",
+                        "on-tertiary": "#ffffff",
+                        "on-primary-fixed-variant": "#3b35a7",
+                        "tertiary-fixed-dim": "#4edea3",
+                        "on-surface": "#0b1c30",
+                        "surface-container-high": "#dce9ff",
+                        "surface": "#f8f9ff",
+                        "on-primary-fixed": "#0f0069",
+                        "primary-fixed": "#e2dfff",
+                        "inverse-on-surface": "#eaf1ff",
+                        "on-tertiary-fixed-variant": "#005236",
+                        "on-error-container": "#93000a",
+                        "outline": "#777584",
+                        "on-background": "#0b1c30",
+                        "error": "#ba1a1a",
+                        "surface-variant": "#d3e4fe",
+                        "inverse-primary": "#c3c0ff",
+                        "tertiary": "#003421",
+                        "surface-container-highest": "#d3e4fe",
+                        "on-primary-container": "#a9a7ff",
+                        "surface-container": "#e5eeff",
+                        "secondary-fixed": "#d8e3fb",
+                        "surface-dim": "#cbdbf5",
+                        "outline-variant": "#c8c4d5",
+                        "on-secondary": "#ffffff",
+                        "primary-fixed-dim": "#c3c0ff",
+                        "on-tertiary-fixed": "#002113"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem"
+                    },
+                    "spacing": {
+                        "md": "16px",
+                        "xs": "4px",
+                        "unit": "4px",
+                        "margin-page": "40px",
+                        "gutter": "20px",
+                        "lg": "24px",
+                        "xl": "32px",
+                        "sm": "8px"
+                    },
+                    "fontFamily": {
+                        "h1": ["Inter"],
+                        "code": ["monospace"],
+                        "label-caps": ["Inter"],
+                        "body-sm": ["Inter"],
+                        "body-lg": ["Inter"],
+                        "h3": ["Inter"],
+                        "h2": ["Inter"],
+                        "body-md": ["Inter"]
+                    },
+                    "fontSize": {
+                        "h1": ["32px", { "lineHeight": "1.2", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+                        "code": ["14px", { "lineHeight": "1.5", "fontWeight": "400" }],
+                        "label-caps": ["12px", { "lineHeight": "1", "letterSpacing": "0.05em", "fontWeight": "600" }],
+                        "body-sm": ["13px", { "lineHeight": "1.5", "fontWeight": "400" }],
+                        "body-lg": ["16px", { "lineHeight": "1.6", "fontWeight": "400" }],
+                        "h3": ["20px", { "lineHeight": "1.4", "letterSpacing": "-0.01em", "fontWeight": "600" }],
+                        "h2": ["24px", { "lineHeight": "1.3", "letterSpacing": "-0.01em", "fontWeight": "600" }],
+                        "body-md": ["14px", { "lineHeight": "1.5", "fontWeight": "400" }]
+                    }
+                },
+            },
+        }
+    </script>
+    <style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            display: inline-block;
+            line-height: 1;
+            text-transform: none;
+            letter-spacing: normal;
+            word-wrap: normal;
+            white-space: nowrap;
+            direction: ltr;
+        }
+
+        .soft-depth {
+            shadow: 0 4px 12px rgba(15, 23, 42, 0.08);
+        }
+    </style>
+    <style>
+        body {
+            min-height: max(884px, 100dvh);
+        }
+    </style>
+</head>
+
+<body class="bg-background text-on-background font-body-md min-h-screen pb-32">
+    <!-- TopAppBar -->
+    <header
+        class="sticky top-0 z-50 flex justify-between items-center px-margin-page py-md w-full bg-surface-container-lowest border-b border-outline-variant shadow-sm">
+        <div class="flex items-center gap-sm">
+            <span class="material-symbols-outlined text-primary" data-icon="search">search</span>
+            <h1 class="font-h2 text-h2 font-bold text-primary">OpenBookList</h1>
+        </div>
+        <div class="flex items-center gap-md">
+            <div class="hidden md:flex items-center gap-md">
+                <span class="text-primary font-bold font-label-caps cursor-pointer">Bookmarks</span>
+                <span class="text-on-surface-variant font-label-caps cursor-pointer">Categories</span>
+                <span class="text-on-surface-variant font-label-caps cursor-pointer">Tags</span>
+                <span class="text-on-surface-variant font-label-caps cursor-pointer">Settings</span>
+            </div>
+            <img alt="User Profile"
+                class="w-10 h-10 rounded-full border border-outline-variant hover:bg-surface-container-low transition-colors active:scale-95 duration-200"
+                src="https://lh3.googleusercontent.com/aida-public/AB6AXuDaPsy_YB5VJPf2rkX9PauKfH_QzJXCraIldal46kUCpBZWhmFogNodGNFmM0-XHF9boBTx5J4LALA2R1MJH1VtdGX-EfxK0YmthWKNfJiXMQmgzHwv8tKiLw1boRq6h3XVvyBSqiGU98j30P_FrKES3igJwGW0GgT7HzISSray8vxE1SLwbFhsnZ5sGA-64JJJNebfPSkl4A6ADydL5lmoIkD8xQ4ZZ56xKQEYdrgi3WUnyBs07vT5scqKv4ZCIseZYaOpHUTgFOLB" />
+        </div>
+    </header>
+    <main class="max-w-[1200px] mx-auto px-margin-page py-xl">
+        <!-- Utility Controls -->
+        <section class="flex flex-col md:flex-row justify-between items-start md:items-center gap-lg mb-xl">
+            <div class="w-full md:max-w-md relative">
+                <input
+                    class="w-full bg-surface-container-lowest border border-outline-variant rounded-xl px-xl py-md focus:ring-4 focus:ring-primary-fixed focus:border-primary transition-all outline-none text-body-md"
+                    placeholder="Search your sanctuary..." type="text" />
+                <span class="material-symbols-outlined absolute left-md top-1/2 -translate-y-1/2 text-outline"
+                    data-icon="search">search</span>
+            </div>
+            <div class="flex items-center gap-md w-full md:w-auto">
+                <div class="flex bg-surface-container-low p-1 rounded-lg border border-outline-variant">
+                    <button
+                        class="bg-surface-container-lowest text-primary shadow-sm px-md py-xs rounded flex items-center gap-xs">
+                        <span class="material-symbols-outlined text-[20px]" data-icon="grid_view">grid_view</span>
+                    </button>
+                    <button
+                        class="text-on-surface-variant hover:bg-surface-container-lowest px-md py-xs rounded flex items-center gap-xs transition-colors">
+                        <span class="material-symbols-outlined text-[20px]" data-icon="view_list">view_list</span>
+                    </button>
+                </div>
+                <div class="relative group">
+                    <button
+                        class="flex items-center gap-sm bg-surface-container-lowest border border-outline-variant px-lg py-md rounded-xl hover:bg-surface-container-low transition-colors">
+                        <span class="font-label-caps text-on-surface-variant">Sort by: Date</span>
+                        <span class="material-symbols-outlined text-outline" data-icon="expand_more">expand_more</span>
+                    </button>
+                </div>
+            </div>
+        </section>
+        <!-- Bookmark Grid -->
+        <section class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-lg">
+            <!-- Card 1 -->
+            <div
+                class="group bg-surface-container-lowest border border-outline-variant rounded-xl overflow-hidden hover:shadow-[0_4px_12px_rgba(15,23,42,0.08)] transition-all flex flex-col border-l-4 border-l-primary">
+                <div class="aspect-[3/4] relative overflow-hidden bg-surface-variant">
+                    <img class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                        data-alt="A clean, high-angle shot of a minimalist workspace with a sleek laptop displaying complex source code. The lighting is soft and professional, emphasizing a modern light-mode office aesthetic with neutral gray tones and subtle deep blue accents. The atmosphere is focused and organized, embodying technical precision and an information sanctuary for developers."
+                        src="https://lh3.googleusercontent.com/aida-public/AB6AXuAUljJaNZw79hZ_iNstnLroby1Dwh7UsoIBkZGfztRAGa0E1eHPvfm1pXNxtzYr7YEdJD3w2a5kG916zJEUTriu58J-g6t0Kptyvw8ByAX08AoqF94h-vWD7e6QSa8yzg-d7EMkgOK8zwFwSFpHOC2D1eFuiQKj7os_EOyxq4e9W7uIPHQKwC3aSQ-Bd3hN9tCI7S4iVI5ZM9i5_miqIjg3dU3BEs8SC00sSOEd89suCqsdNK3SOnYZ3Kbjmo-m6eGhl5jm_br5ahgU" />
+                    <div class="absolute top-md left-md">
+                        <span
+                            class="bg-primary text-on-primary font-label-caps px-sm py-xs rounded text-[10px]">Development</span>
+                    </div>
+                </div>
+                <div class="p-md flex-grow flex flex-col justify-between">
+                    <div>
+                        <div class="flex justify-between items-start mb-xs">
+                            <h3 class="font-h3 text-on-surface line-clamp-2">Mastering Tailwind CSS v4 Architecture</h3>
+                            <button class="text-outline hover:text-primary transition-colors p-xs -mr-xs">
+                                <span class="material-symbols-outlined" data-icon="more_vert">more_vert</span>
+                            </button>
+                        </div>
+                        <div class="flex flex-wrap gap-xs mt-md">
+                            <span
+                                class="bg-surface-container-low text-on-surface-variant font-label-caps px-sm py-xs rounded-full text-[10px]">#tailwind</span>
+                            <span
+                                class="bg-surface-container-low text-on-surface-variant font-label-caps px-sm py-xs rounded-full text-[10px]">#css</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Card 2 -->
+            <div
+                class="group bg-surface-container-lowest border border-outline-variant rounded-xl overflow-hidden hover:shadow-[0_4px_12px_rgba(15,23,42,0.08)] transition-all flex flex-col border-l-4 border-l-tertiary-fixed-dim">
+                <div class="aspect-[3/4] relative overflow-hidden bg-surface-variant">
+                    <img class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                        data-alt="Close-up of a digital design tablet displaying vibrant, high-contrast UI components with glassmorphism effects. The workspace is pristine and minimalist, featuring soft directional lighting that highlights the textures of the hardware. The color palette consists of elegant slates and clean whites, reflecting a corporate modernism style that prioritizes functional layering and clarity."
+                        src="https://lh3.googleusercontent.com/aida-public/AB6AXuBv0AopMjo4GzmO5mbVP0sLXIyaYwkxQmZDsEjO9UGQByuclUbk4WjCdxrASoWNwsQDbb91chYonTgi2N0m2pi3lI5Q1QP-riMmwjFjQxWP9IPNgfXyM4Cy6WAxeZNCq-m7NtEgrMSFFtJil3WnNvYKidIuXnm3XVNpKxkT-cVwS_7hVEfGidZa2E258kTyun1oyVjfQG-KFxCWGYuaHAluf7SGiP8YDM-FNYVrhZI2y_wDPjOXfuoly46N3V-FsdtiBye4Voo4u9G8" />
+                    <div class="absolute top-md left-md">
+                        <span
+                            class="bg-tertiary-container text-on-tertiary-container font-label-caps px-sm py-xs rounded text-[10px]">Design</span>
+                    </div>
+                </div>
+                <div class="p-md flex-grow flex flex-col justify-between">
+                    <div>
+                        <div class="flex justify-between items-start mb-xs">
+                            <h3 class="font-h3 text-on-surface line-clamp-2">User Psychology in Modern SaaS</h3>
+                            <button class="text-outline hover:text-primary transition-colors p-xs -mr-xs">
+                                <span class="material-symbols-outlined" data-icon="more_vert">more_vert</span>
+                            </button>
+                        </div>
+                        <div class="flex flex-wrap gap-xs mt-md">
+                            <span
+                                class="bg-surface-container-low text-on-surface-variant font-label-caps px-sm py-xs rounded-full text-[10px]">#ux</span>
+                            <span
+                                class="bg-surface-container-low text-on-surface-variant font-label-caps px-sm py-xs rounded-full text-[10px]">#saas</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Card 3 -->
+            <div
+                class="group bg-surface-container-lowest border border-outline-variant rounded-xl overflow-hidden hover:shadow-[0_4px_12px_rgba(15,23,42,0.08)] transition-all flex flex-col border-l-4 border-l-secondary">
+                <div class="aspect-[3/4] relative overflow-hidden bg-surface-variant">
+                    <img class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                        data-alt="A professional, wide-angle shot of a bright server room with glowing green status lights on high-end hardware racks. The environment is impeccably clean and organized, representing secure data storage and information sanctuary. The lighting is crisp and cool-toned, maintaining a sophisticated professional atmosphere with high signal-to-noise ratio in visual detail."
+                        src="https://lh3.googleusercontent.com/aida-public/AB6AXuDl5Z_oM8DwqTegHmxaiahss5vMcR1PX0jFRGwZg020KjW7_lczo1A8XC12ZIdNjBW2cDaou7m4VRbi4hw6o7rDt-6fNpfQ5i-VAVTe-zS30O5zYuFSvChbi94Ov1aJKGEi3Gbky6dlPFB2ZOuL5P3kmnn5ArbOe2JGAQRuJUjL738SHB9RfJA6wjp3LzD9SN899pABin-5n383zhcbUJPwsv1LtZaK8OeSXXnuBknHA-_7ajx8Tf8phS2C0tJf2VDjie52YiloS_uw" />
+                    <div class="absolute top-md left-md">
+                        <span
+                            class="bg-secondary text-on-secondary font-label-caps px-sm py-xs rounded text-[10px]">Security</span>
+                    </div>
+                </div>
+                <div class="p-md flex-grow flex flex-col justify-between">
+                    <div>
+                        <div class="flex justify-between items-start mb-xs">
+                            <h3 class="font-h3 text-on-surface line-clamp-2">Advanced OAuth2 &amp; PKCE Implementation
+                            </h3>
+                            <button class="text-outline hover:text-primary transition-colors p-xs -mr-xs">
+                                <span class="material-symbols-outlined" data-icon="more_vert">more_vert</span>
+                            </button>
+                        </div>
+                        <div class="flex flex-wrap gap-xs mt-md">
+                            <span
+                                class="bg-surface-container-low text-on-surface-variant font-label-caps px-sm py-xs rounded-full text-[10px]">#auth</span>
+                            <span
+                                class="bg-surface-container-low text-on-surface-variant font-label-caps px-sm py-xs rounded-full text-[10px]">#web-security</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Card 4 -->
+            <div
+                class="group bg-surface-container-lowest border border-outline-variant rounded-xl overflow-hidden hover:shadow-[0_4px_12px_rgba(15,23,42,0.08)] transition-all flex flex-col border-l-4 border-l-primary-container">
+                <div class="aspect-[3/4] relative overflow-hidden bg-surface-variant">
+                    <img class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                        data-alt="An abstract visualization of a data network with glowing nodes and intricate interconnecting lines against a clean slate background. The style is inspired by modern IDEs, featuring technical precision and structural alignment. Soft ambient lighting creates depth through tonal layering, using a palette of indigo, emerald, and pristine white to convey order and reliability."
+                        src="https://lh3.googleusercontent.com/aida-public/AB6AXuBp0oWmgOVwk2V1NcV0PPTxHzLvvQp_X_tGbaVTvcfitiA7Q9RWvBtuIHg2BQWfHASrKtJwy_aKlnKoangxq9Z1QRYJYi5572AtPz54r7CpI6vP8bXOO6Rbyt8CFaumB5ZyNn4jUBme2lw74SpGdZQXWZDZJT8VMqtcPTPhjnRY4dvVrdK7IPdf0xq5SzdjrsdaHpb19f_FcdMbK4248Kl9GhDKT3N_G_w-mXWzs6TLennPYBO61uuQErm2nk_mfSMjQh1GFWEloywY" />
+                    <div class="absolute top-md left-md">
+                        <span
+                            class="bg-primary-container text-on-primary-container font-label-caps px-sm py-xs rounded text-[10px]">Frameworks</span>
+                    </div>
+                </div>
+                <div class="p-md flex-grow flex flex-col justify-between">
+                    <div>
+                        <div class="flex justify-between items-start mb-xs">
+                            <h3 class="font-h3 text-on-surface line-clamp-2">Vue 3 Composition API Patterns</h3>
+                            <button class="text-outline hover:text-primary transition-colors p-xs -mr-xs">
+                                <span class="material-symbols-outlined" data-icon="more_vert">more_vert</span>
+                            </button>
+                        </div>
+                        <div class="flex flex-wrap gap-xs mt-md">
+                            <span
+                                class="bg-surface-container-low text-on-surface-variant font-label-caps px-sm py-xs rounded-full text-[10px]">#vue</span>
+                            <span
+                                class="bg-surface-container-low text-on-surface-variant font-label-caps px-sm py-xs rounded-full text-[10px]">#frontend</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <!-- Load More Button -->
+        <div class="mt-xl flex justify-center pb-xl">
+            <button
+                class="bg-slate-100 text-slate-800 font-label-caps px-xl py-md rounded-xl hover:bg-slate-200 transition-all active:scale-95 flex items-center gap-sm">
+                <span>LOAD MORE BOOKMARKS</span>
+                <span class="material-symbols-outlined text-[18px]" data-icon="arrow_downward">arrow_downward</span>
+            </button>
+        </div>
+    </main>
+    <!-- FAB for New Bookmark -->
+    <button
+        class="fixed right-lg bottom-32 z-50 bg-primary text-on-primary w-14 h-14 rounded-full shadow-lg flex items-center justify-center hover:scale-105 transition-transform active:scale-95 group">
+        <span class="material-symbols-outlined text-[28px]" data-icon="add">add</span>
+        <span
+            class="absolute right-full mr-md bg-inverse-surface text-inverse-on-surface font-label-caps px-md py-xs rounded opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap pointer-events-none">New
+            Bookmark</span>
+    </button>
+    <!-- BottomNavBar -->
+    <nav
+        class="fixed bottom-0 left-0 w-full z-50 flex justify-around items-center px-md py-xs pb-safe bg-surface-container-lowest border-t border-outline-variant shadow-lg md:hidden">
+        <div
+            class="flex flex-col items-center justify-center bg-secondary-container text-on-secondary-container rounded-full px-4 py-1">
+            <span class="material-symbols-outlined" data-icon="bookmark" data-weight="fill"
+                style="font-variation-settings: 'FILL' 1;">bookmark</span>
+            <span class="font-label-caps text-[10px]">Bookmarks</span>
+        </div>
+        <div class="flex flex-col items-center justify-center text-on-surface-variant p-2">
+            <span class="material-symbols-outlined" data-icon="folder">folder</span>
+            <span class="font-label-caps text-[10px]">Categories</span>
+        </div>
+        <div class="flex flex-col items-center justify-center text-on-surface-variant p-2">
+            <span class="material-symbols-outlined" data-icon="sell">sell</span>
+            <span class="font-label-caps text-[10px]">Tags</span>
+        </div>
+        <div class="flex flex-col items-center justify-center text-on-surface-variant p-2">
+            <span class="material-symbols-outlined" data-icon="settings">settings</span>
+            <span class="font-label-caps text-[10px]">Settings</span>
+        </div>
+    </nav>
+</body>
+
+</html>
