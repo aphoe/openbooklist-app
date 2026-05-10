@@ -40,30 +40,94 @@ class BookmarkMenuButton extends StatelessWidget {
     return PopupMenuButton<BookmarkCardAction>(
       icon: const Icon(Icons.more_vert, size: 18, color: AppColors.textMuted),
       padding: EdgeInsets.zero,
-      itemBuilder: (_) => const [
+      itemBuilder: (_) => [
         PopupMenuItem(
           value: BookmarkCardAction.visit,
-          child: Text('Visit'),
+          child: Row(
+            children: [
+              const Icon(
+                Icons.open_in_new_outlined,
+                size: 18,
+                color: AppColors.textMuted,
+              ),
+              const SizedBox(width: 12),
+              const Text('Visit'),
+            ],
+          ),
         ),
         PopupMenuItem(
           value: BookmarkCardAction.details,
-          child: Text('Details'),
+          child: Row(
+            children: [
+              const Icon(
+                Icons.info_outlined,
+                size: 18,
+                color: AppColors.textMuted,
+              ),
+              const SizedBox(width: 12),
+              const Text('Details'),
+            ],
+          ),
         ),
         PopupMenuItem(
           value: BookmarkCardAction.refreshMetadata,
-          child: Text('Refresh Metadata'),
+          child: Row(
+            children: [
+              const Icon(
+                Icons.refresh_outlined,
+                size: 18,
+                color: AppColors.textMuted,
+              ),
+              const SizedBox(width: 12),
+              const Text('Refresh Metadata'),
+            ],
+          ),
         ),
         PopupMenuItem(
           value: BookmarkCardAction.setImage,
-          child: Text('Set Image'),
+          child: Row(
+            children: [
+              const Icon(
+                Icons.image_outlined,
+                size: 18,
+                color: AppColors.textMuted,
+              ),
+              const SizedBox(width: 12),
+              const Text('Set Image'),
+            ],
+          ),
         ),
         PopupMenuItem(
           value: BookmarkCardAction.edit,
-          child: Text('Edit'),
+          child: Row(
+            children: [
+              const Icon(
+                Icons.edit_outlined,
+                size: 18,
+                color: AppColors.textMuted,
+              ),
+              const SizedBox(width: 12),
+              const Text('Edit'),
+            ],
+          ),
         ),
+        const PopupMenuDivider(color: AppColors.borderGrayLight),
         PopupMenuItem(
           value: BookmarkCardAction.delete,
-          child: Text('Delete'),
+          child: Row(
+            children: [
+              const Icon(
+                Icons.delete_outlined,
+                size: 18,
+                color: AppColors.danger,
+              ),
+              const SizedBox(width: 12),
+              Text(
+                'Delete',
+                style: AppTextStyles.body.copyWith(color: AppColors.danger),
+              ),
+            ],
+          ),
         ),
       ],
       onSelected: (action) => onAction(action, bookmark),
