@@ -23,6 +23,7 @@ class AppColors {
 
   // Border & Neutral
   static const Color borderGray = Color(0xFFE2E8F0);
+  static const Color borderGrayLight = Color(0xFFF1F5F9);
   static const Color grayLight = Color(0xFFD1D3D8);
   static const Color gray300 = Color(0xFFD0D5DD);
   static const Color textGrayLighter = Color(0xFFF7F8F9);
