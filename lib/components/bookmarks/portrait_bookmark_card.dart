@@ -136,7 +136,7 @@ class _CardContent extends StatelessWidget {
             ],
           ),
           if (bookmark.tags.isNotEmpty) ...[
-            const SizedBox(height: 6),
+            const SizedBox(height: 12),
             BookmarkTagsRow(tags: bookmark.tags),
           ],
         ],
