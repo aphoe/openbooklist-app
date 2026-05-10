@@ -7,6 +7,7 @@ import 'package:url_launcher/url_launcher.dart';
 import '../../components/bookmarks/add_bookmark_modal.dart';
 import '../../components/bookmarks/bookmark_card_action.dart';
 import '../../components/bookmarks/bookmark_detail_modal.dart';
+import '../../components/bookmarks/set_image_modal.dart';
 import '../../components/bookmarks/bottom_nav_bar.dart';
 import '../../components/bookmarks/landscape_bookmark_card.dart';
 import '../../components/bookmarks/portrait_bookmark_card.dart';
@@ -110,6 +111,8 @@ class _BookmarksScreenState extends State<BookmarksScreen> {
         if (mounted) await showBookmarkDetailModal(context, bookmark);
       case BookmarkCardAction.refreshMetadata:
         if (mounted) await _refetchMetadata(bookmark);
+      case BookmarkCardAction.setImage:
+        if (mounted) await _setImage(bookmark);
       case BookmarkCardAction.delete:
         if (mounted) await _confirmDelete(bookmark);
       default:
@@ -121,6 +124,19 @@ class _BookmarksScreenState extends State<BookmarksScreen> {
             type: ToastificationType.info,
           );
         }
+    }
+  }
+
+  Future<void> _setImage(Bookmark bookmark) async {
+    final updated = await showSetImageModal(context, bookmark);
+    if (updated && mounted) {
+      DisplayService.showToast(
+        context,
+        title: 'Image Updated',
+        message: 'Bookmark image has been updated.',
+        type: ToastificationType.success,
+      );
+      await _controller.refresh(sort: _sortToApiValue(_sortBy));
     }
   }
 
