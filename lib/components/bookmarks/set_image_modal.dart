@@ -94,14 +94,17 @@ class _SetImageModalState extends State<SetImageModal> {
         bottom: MediaQuery.of(context).viewInsets.bottom,
       ),
       child: DraggableScrollableSheet(
-        initialChildSize: 0.55,
+        initialChildSize: 0.70,
         minChildSize: 0.4,
         maxChildSize: 0.85,
         expand: false,
         builder: (_, scrollController) => Column(
           children: [
             const _DragHandle(),
-            _ModalHeader(onClose: () => Navigator.of(context).pop(false)),
+            _ModalHeader(
+              bookmark: widget.bookmark,
+              onClose: () => Navigator.of(context).pop(false),
+            ),
             Expanded(
               child: SingleChildScrollView(
                 controller: scrollController,
@@ -200,8 +203,9 @@ class _DragHandle extends StatelessWidget {
 }
 
 class _ModalHeader extends StatelessWidget {
-  const _ModalHeader({required this.onClose});
+  const _ModalHeader({required this.bookmark, required this.onClose});
 
+  final Bookmark bookmark;
   final VoidCallback onClose;
 
   @override
@@ -209,15 +213,32 @@ class _ModalHeader extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
       child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(
-            'Set Bookmark Image',
-            style: AppTextStyles.heading3.copyWith(
-              color: AppColors.primaryDark,
-              fontWeight: FontWeight.w600,
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  'Set Bookmark Image',
+                  style: AppTextStyles.heading3.copyWith(
+                    color: AppColors.primaryDark,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+                const SizedBox(height: 4),
+                Text(
+                  bookmark.title ?? bookmark.domain,
+                  style: AppTextStyles.body.copyWith(
+                    color: AppColors.textSecondary,
+                  ),
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                ),
+              ],
             ),
           ),
-          const Spacer(),
+          const SizedBox(width: 12),
           IconButton(
             onPressed: onClose,
             icon: const Icon(Icons.close, size: 20),
