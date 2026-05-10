@@ -29,11 +29,11 @@ class SearchBox extends StatelessWidget {
         ),
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(12),
-          borderSide: const BorderSide(color: Color(0xFFE2E8F0)), // slate-200
+          borderSide: const BorderSide(color: AppColors.borderGray),
         ),
         enabledBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(12),
-          borderSide: const BorderSide(color: Color(0xFFE2E8F0)), // slate-200
+          borderSide: const BorderSide(color: AppColors.borderGray),
         ),
         focusedBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(12),
