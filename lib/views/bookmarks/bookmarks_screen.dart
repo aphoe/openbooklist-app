@@ -73,10 +73,7 @@ class _BookmarksScreenState extends State<BookmarksScreen> {
     return list;
   }
 
-  List<Bookmark> get _recentlySaved => _sortedBookmarks.take(6).toList();
-
-  List<Bookmark> get _favorites =>
-      _sortedBookmarks.where((b) => b.favorite).toList();
+  List<Bookmark> get _allBookmarks => _sortedBookmarks;
 
   List<Bookmark> get _filtered => _sortedBookmarks.where((b) {
     return (b.title?.toLowerCase().contains(_searchQuery) ?? false) ||
@@ -184,14 +181,12 @@ class _BookmarksScreenState extends State<BookmarksScreen> {
       child: CustomScrollView(
         slivers: [
           SliverToBoxAdapter(
-            child: _RecentlySavedSection(
-              bookmarks: _recentlySaved,
+            child: _BookmarksSection(
+              bookmarks: _allBookmarks,
               onAction: _handleAction,
               displayType: _displayType,
             ),
           ),
-          if (_favorites.isNotEmpty)
-            SliverToBoxAdapter(child: _FavoritesSection(bookmarks: _favorites)),
           const SliverToBoxAdapter(child: SizedBox(height: 24)),
         ],
       ),
@@ -229,7 +224,6 @@ class _BookmarksScreenState extends State<BookmarksScreen> {
             onDisplayTypeChanged: (t) => setState(() => _displayType = t),
             onSortChanged: (s) => setState(() => _sortBy = s),
           ),
-          Divider(height: 1, color: AppColors.borderGray),
           Expanded(
             child: AnimatedBuilder(
               animation: _controller,
@@ -422,10 +416,10 @@ class _SortButton extends StatelessWidget {
   }
 }
 
-// ── Recently Saved ────────────────────────────────────────────────────────────
+// ── Bookmarks ────────────────────────────────────────────────────────────
 
-class _RecentlySavedSection extends StatelessWidget {
-  const _RecentlySavedSection({
+class _BookmarksSection extends StatelessWidget {
+  const _BookmarksSection({
     required this.bookmarks,
     required this.onAction,
     required this.displayType,
@@ -465,117 +459,6 @@ class _RecentlySavedSection extends StatelessWidget {
                 child: LandscapeBookmarkCard(bookmark: b, onAction: onAction),
               ),
             ),
-        ],
-      ),
-    );
-  }
-}
-
-// ── Favorites ────────────────────────────────────────────────────────────────
-
-class _FavoritesSection extends StatelessWidget {
-  const _FavoritesSection({required this.bookmarks});
-
-  final List<Bookmark> bookmarks;
-
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.fromLTRB(16, 24, 16, 0),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-            'Favorites',
-            style: AppTextStyles.body2.copyWith(
-              fontSize: 18,
-              color: AppColors.textBlack,
-            ),
-          ),
-          const SizedBox(height: 12),
-          Container(
-            decoration: BoxDecoration(
-              color: AppColors.surface,
-              borderRadius: BorderRadius.circular(16),
-              border: Border.all(color: AppColors.grayLight),
-            ),
-            child: Column(
-              children: bookmarks.asMap().entries.map((e) {
-                return Column(
-                  children: [
-                    if (e.key > 0)
-                      const Divider(
-                        height: 1,
-                        indent: 16,
-                        endIndent: 16,
-                        color: AppColors.grayLight,
-                      ),
-                    _FavoriteItem(bookmark: e.value),
-                  ],
-                );
-              }).toList(),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-}
-
-class _FavoriteItem extends StatelessWidget {
-  const _FavoriteItem({required this.bookmark});
-
-  final Bookmark bookmark;
-
-  String get _initials {
-    final parts = bookmark.domain.split('.');
-    final base = parts.length >= 2 ? parts[parts.length - 2] : bookmark.domain;
-    return base.substring(0, base.length >= 2 ? 2 : base.length).toUpperCase();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
-      child: Row(
-        children: [
-          Container(
-            width: 36,
-            height: 36,
-            decoration: BoxDecoration(
-              color: AppColors.primaryDark,
-              borderRadius: BorderRadius.circular(8),
-            ),
-            child: Center(
-              child: Text(
-                _initials,
-                style: AppTextStyles.labelCaps.copyWith(color: AppColors.white),
-              ),
-            ),
-          ),
-          const SizedBox(width: 14),
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  bookmark.title ?? bookmark.domain,
-                  style: AppTextStyles.bodySmallSB.copyWith(
-                    color: AppColors.textBlack,
-                  ),
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
-                ),
-                Text(
-                  bookmark.domain,
-                  style: AppTextStyles.regular.copyWith(
-                    color: AppColors.textMuted,
-                  ),
-                ),
-              ],
-            ),
-          ),
-          const Icon(Icons.star, size: 20, color: Color(0xFFFBBF24)),
         ],
       ),
     );
