@@ -106,7 +106,7 @@ class _InfoCard extends StatelessWidget {
           ),
           const SizedBox(height: 12),
           Text(
-            'To use this app you need a running OpenBookList '
+            'To use this app you need a running $appName '
             'instance. You can set one up or learn more from '
             'the official project repository:',
             style: AppTextStyles.body.copyWith(
