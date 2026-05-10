@@ -55,7 +55,7 @@ class _CardImage extends StatelessWidget {
           Positioned(
             top: 10,
             left: 10,
-            child: _CategoryChip(name: bookmark.category!.name),
+            child: BookmarkCategoryChip(name: bookmark.category!.name),
           ),
       ],
     );
@@ -83,29 +83,6 @@ class _CardImage extends StatelessWidget {
   );
 }
 
-class _CategoryChip extends StatelessWidget {
-  const _CategoryChip({required this.name});
-
-  final String name;
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
-      decoration: BoxDecoration(
-        color: AppColors.primary,
-        borderRadius: BorderRadius.circular(4),
-      ),
-      child: Text(
-        name.toUpperCase(),
-        style: AppTextStyles.labelCaps.copyWith(
-          color: AppColors.white,
-          fontSize: 10,
-        ),
-      ),
-    );
-  }
-}
 
 class _CardContent extends StatelessWidget {
   const _CardContent({required this.bookmark, required this.onAction});

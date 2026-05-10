@@ -71,6 +71,30 @@ class BookmarkMenuButton extends StatelessWidget {
   }
 }
 
+class BookmarkCategoryChip extends StatelessWidget {
+  const BookmarkCategoryChip({super.key, required this.name});
+
+  final String name;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
+      decoration: BoxDecoration(
+        color: AppColors.primary,
+        borderRadius: BorderRadius.circular(4),
+      ),
+      child: Text(
+        name.toUpperCase(),
+        style: AppTextStyles.labelCaps.copyWith(
+          color: AppColors.white,
+          fontSize: 10,
+        ),
+      ),
+    );
+  }
+}
+
 class BookmarkTagsRow extends StatelessWidget {
   const BookmarkTagsRow({super.key, required this.tags});
 
