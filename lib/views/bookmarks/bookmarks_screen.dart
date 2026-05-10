@@ -8,6 +8,7 @@ import '../../components/bookmarks/bookmark_card_action.dart';
 import '../../components/bookmarks/bottom_nav_bar.dart';
 import '../../components/bookmarks/landscape_bookmark_card.dart';
 import '../../components/bookmarks/search_box.dart';
+import '../../constants/constants.dart';
 import '../../controllers/bookmarks_controller.dart';
 import '../../data/models/bookmark.dart';
 import '../../services/display_service.dart';
@@ -176,7 +177,7 @@ class _BookmarksScreenState extends State<BookmarksScreen> {
         automaticallyImplyLeading: false,
         titleSpacing: 16,
         title: Text(
-          'OpenBookList',
+          appName,
           style: AppTextStyles.heading3.copyWith(
             color: AppColors.primaryDark,
             fontWeight: FontWeight.w700,

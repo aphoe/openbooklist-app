@@ -40,7 +40,7 @@ class LostScreen extends StatelessWidget {
                     ),
                     const SizedBox(height: 16),
                     Text(
-                      'What is OpenBookList?',
+                      'What is $appName?',
                       style: AppTextStyles.heading2.copyWith(
                         color: AppColors.textBlack,
                       ),
@@ -97,7 +97,7 @@ class _InfoCard extends StatelessWidget {
           ),
           const SizedBox(height: 16),
           Text(
-            'This is a companion app for OpenBookList — a '
+            'This is a companion app for $appName — a '
             'self-hosted, open-source bookmark manager you run '
             'on your own server.',
             style: AppTextStyles.body.copyWith(

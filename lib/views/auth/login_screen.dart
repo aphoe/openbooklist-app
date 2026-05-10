@@ -206,7 +206,7 @@ class _LoginCard extends StatelessWidget {
                   ),
                   const SizedBox(height: 4),
                   Text(
-                    'Connect to your OpenBookList instance.',
+                    'Connect to your $appName instance.',
                     style: AppTextStyles.bodySmall.copyWith(
                       color: AppColors.textSecondary,
                     ),
