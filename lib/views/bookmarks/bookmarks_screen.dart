@@ -13,6 +13,7 @@ import '../../components/bookmarks/portrait_bookmark_card.dart';
 import '../../components/bookmarks/search_box.dart';
 import '../../constants/constants.dart';
 import '../../controllers/bookmarks_controller.dart';
+import '../../controllers/refetch_metadata_controller.dart';
 import '../../data/models/bookmark.dart';
 import '../../services/display_service.dart';
 import '../../theme/app_colors.dart';
@@ -107,6 +108,8 @@ class _BookmarksScreenState extends State<BookmarksScreen> {
         }
       case BookmarkCardAction.details:
         if (mounted) await showBookmarkDetailModal(context, bookmark);
+      case BookmarkCardAction.refreshMetadata:
+        if (mounted) await _refetchMetadata(bookmark);
       case BookmarkCardAction.delete:
         if (mounted) await _confirmDelete(bookmark);
       default:
@@ -148,6 +151,36 @@ class _BookmarksScreenState extends State<BookmarksScreen> {
         title: 'Not Connected',
         message: 'Delete API not yet connected.',
         type: ToastificationType.warning,
+      );
+    }
+  }
+
+  Future<void> _refetchMetadata(Bookmark bookmark) async {
+    showDialog<void>(
+      context: context,
+      barrierDismissible: false,
+      builder: (_) => const _LoadingDialog(message: 'Refreshing metadata…'),
+    );
+
+    final error = await RefetchMetadataController().call(bookmark.id);
+
+    if (!mounted) return;
+    Navigator.of(context).pop();
+
+    if (error == null) {
+      DisplayService.showToast(
+        context,
+        title: 'Metadata Refreshed',
+        message: 'Bookmark metadata has been updated.',
+        type: ToastificationType.success,
+      );
+      await _controller.refresh();
+    } else {
+      DisplayService.showToast(
+        context,
+        title: 'Refresh Failed',
+        message: error,
+        type: ToastificationType.error,
       );
     }
   }
@@ -581,6 +614,41 @@ class _ErrorView extends StatelessWidget {
               onPressed: onRetry,
               icon: const Icon(Icons.refresh, size: 18),
               label: const Text('Retry'),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class _LoadingDialog extends StatelessWidget {
+  const _LoadingDialog({required this.message});
+
+  final String message;
+
+  @override
+  Widget build(BuildContext context) {
+    return Dialog(
+      backgroundColor: AppColors.surface,
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 28),
+        child: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            const SizedBox(
+              width: 22,
+              height: 22,
+              child: CircularProgressIndicator(
+                strokeWidth: 2.5,
+                color: AppColors.primary,
+              ),
+            ),
+            const SizedBox(width: 16),
+            Text(
+              message,
+              style: AppTextStyles.body.copyWith(color: AppColors.textBlack),
             ),
           ],
         ),
