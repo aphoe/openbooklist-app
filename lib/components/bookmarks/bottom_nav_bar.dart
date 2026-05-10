@@ -5,31 +5,23 @@ import '../../theme/app_text.dart';
 
 /// Bottom navigation bar with Home, Saved, Grid, Settings tabs.
 class BottomNavBar extends StatelessWidget {
-  const BottomNavBar({
-    super.key,
-    required this.selectedIndex,
-    this.onTap,
-  });
+  const BottomNavBar({super.key, required this.selectedIndex, this.onTap});
 
   final int selectedIndex;
   final ValueChanged<int>? onTap;
 
   static const _items = [
     _NavItem(
-      label: 'Home',
-      icon: Icons.home_outlined,
-      activeIcon: Icons.home,
-    ),
-    _NavItem(
-      label: 'Saved',
+      label: 'Bookmarks',
       icon: Icons.bookmark_border,
       activeIcon: Icons.bookmark,
     ),
     _NavItem(
-      label: 'Grid',
-      icon: Icons.grid_view_outlined,
-      activeIcon: Icons.grid_view,
+      label: 'Category',
+      icon: Icons.folder_outlined,
+      activeIcon: Icons.folder,
     ),
+    _NavItem(label: 'Tags', icon: Icons.label_outline, activeIcon: Icons.label),
     _NavItem(
       label: 'Settings',
       icon: Icons.settings_outlined,
@@ -100,22 +92,20 @@ class _NavButton extends StatelessWidget {
     return GestureDetector(
       onTap: onTap,
       child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+        padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 0),
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
             Icon(
               isActive ? item.activeIcon : item.icon,
-              size: 22,
-              color: isActive ? AppColors.primaryDark : AppColors.textMuted,
+              size: 24,
+              color: isActive ? AppColors.primary : AppColors.gray300,
             ),
             const SizedBox(height: 2),
             Text(
               item.label,
               style: AppTextStyles.labelCaps.copyWith(
-                color: isActive
-                    ? AppColors.primaryDark
-                    : AppColors.textSecondary,
+                color: isActive ? AppColors.primary : AppColors.textSecondary,
               ),
             ),
           ],
