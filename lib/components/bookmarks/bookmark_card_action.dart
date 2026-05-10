@@ -46,9 +46,24 @@ class _BookmarkMenuButtonState extends State<BookmarkMenuButton> {
     final renderBox = context.findRenderObject()! as RenderBox;
     final buttonPosition = renderBox.localToGlobal(Offset.zero);
     final screenSize = MediaQuery.of(context).size;
-    final rightEdge =
-        screenSize.width - buttonPosition.dx - renderBox.size.width;
-    final topOffset = buttonPosition.dy + renderBox.size.height + 6;
+    const menuWidth = 280.0;
+    const menuHeight = 320.0;
+    const padding = 12.0;
+
+    var top = buttonPosition.dy + renderBox.size.height + 6;
+    double? right = screenSize.width - buttonPosition.dx - renderBox.size.width;
+    double? left = buttonPosition.dx;
+
+    if (top + menuHeight > screenSize.height - padding) {
+      top = buttonPosition.dy - menuHeight - 6;
+    }
+
+    if (right + menuWidth > screenSize.width - padding) {
+      right = null;
+      left = (left - menuWidth).clamp(padding, screenSize.width - menuWidth);
+    } else {
+      left = null;
+    }
 
     _overlayEntry = OverlayEntry(
       builder: (_) => Stack(
@@ -61,8 +76,9 @@ class _BookmarkMenuButtonState extends State<BookmarkMenuButton> {
             ),
           ),
           Positioned(
-            top: topOffset,
-            right: rightEdge,
+            top: top.clamp(padding, screenSize.height - menuHeight),
+            right: right,
+            left: left,
             child: _BookmarkMenu(
               bookmark: widget.bookmark,
               onAction: _handleAction,
