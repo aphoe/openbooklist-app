@@ -22,7 +22,7 @@ class AppColors {
   static const Color textMuted = Color(0xFF94A3B8);
 
   // Border & Neutral
-  static const Color borderGray = Color(0xFFC8C4D5);
+  static const Color borderGray = Color(0xFFE2E8F0);
   static const Color grayLight = Color(0xFFD1D3D8);
   static const Color gray300 = Color(0xFFD0D5DD);
   static const Color textGrayLighter = Color(0xFFF7F8F9);
