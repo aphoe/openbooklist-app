@@ -20,16 +20,11 @@ class PortraitBookmarkCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ClipRRect(
-      borderRadius: BorderRadius.circular(12),
+      borderRadius: BorderRadius.circular(10),
       child: Container(
         decoration: BoxDecoration(
           color: AppColors.surface,
-          border: Border(
-            left: BorderSide(color: accentForBookmark(bookmark), width: 4),
-            top: const BorderSide(color: AppColors.borderGray),
-            right: const BorderSide(color: AppColors.borderGray),
-            bottom: const BorderSide(color: AppColors.borderGray),
-          ),
+          border: Border.all(color: AppColors.borderGrayLight, width: 0.8),
         ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -133,7 +128,7 @@ class _CardContent extends StatelessWidget {
                 child: Text(
                   bookmark.title ?? bookmark.domain,
                   style: AppTextStyles.body2,
-                  maxLines: 4,
+                  maxLines: 3,
                   overflow: TextOverflow.ellipsis,
                 ),
               ),

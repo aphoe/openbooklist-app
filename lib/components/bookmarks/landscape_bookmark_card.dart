@@ -20,21 +20,13 @@ class LandscapeBookmarkCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ClipRRect(
-      borderRadius: BorderRadius.circular(16),
+      borderRadius: BorderRadius.circular(10),
       child: SizedBox(
         height: 100,
         child: Container(
           decoration: BoxDecoration(
             color: AppColors.surface,
-            border: Border(
-              left: BorderSide(
-                color: accentForBookmark(bookmark),
-                width: 4,
-              ),
-              top: const BorderSide(color: AppColors.borderGray),
-              right: const BorderSide(color: AppColors.borderGray),
-              bottom: const BorderSide(color: AppColors.borderGray),
-            ),
+            border: Border.all(color: AppColors.borderGrayLight, width: 0.8),
           ),
           child: Row(
             children: [
