@@ -1,4 +1,4 @@
-const String appName = "OpenBooklist";
+const String appName = "OpenBooklist (FREE)";
 const String slogan =
     "Your personal, self-hosted bookmark manager — clean, fast, and fully yours.";
 
