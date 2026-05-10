@@ -21,7 +21,7 @@ class BookmarksController extends ChangeNotifier {
   String? get error => _error;
   bool get hasMore => _currentPage < _lastPage;
 
-  Future<void> fetchBookmarks({int page = 1}) async {
+  Future<void> fetchBookmarks({int page = 1, String sort = 'newest'}) async {
     if (_isLoading) return;
     _isLoading = true;
     if (page == 1) _error = null;
@@ -35,7 +35,7 @@ class BookmarksController extends ChangeNotifier {
         return;
       }
 
-      final uri = Uri.parse('$baseUrl/api/v1/app/bookmarks?page=$page');
+      final uri = Uri.parse('$baseUrl/api/v1/app/bookmarks?page=$page&sort=$sort');
       final response = await http.get(uri, headers: {
         'Authorization': 'Bearer $token',
         'Accept': 'application/json',
@@ -66,10 +66,11 @@ class BookmarksController extends ChangeNotifier {
     }
   }
 
-  Future<void> refresh() => fetchBookmarks();
+  Future<void> refresh({String sort = 'newest'}) =>
+      fetchBookmarks(sort: sort);
 
-  Future<void> loadMore() async {
+  Future<void> loadMore({String sort = 'newest'}) async {
     if (!hasMore || _isLoading) return;
-    await fetchBookmarks(page: _currentPage + 1);
+    await fetchBookmarks(page: _currentPage + 1, sort: sort);
   }
 }

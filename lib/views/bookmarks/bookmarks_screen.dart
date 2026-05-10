@@ -39,7 +39,7 @@ class _BookmarksScreenState extends State<BookmarksScreen> {
   void initState() {
     super.initState();
     _controller = BookmarksController();
-    _controller.fetchBookmarks();
+    _controller.fetchBookmarks(sort: _sortToApiValue(_sortBy));
     _searchController.addListener(_onSearchChanged);
   }
 
@@ -54,6 +54,17 @@ class _BookmarksScreenState extends State<BookmarksScreen> {
     setState(() {
       _searchQuery = _searchController.text.toLowerCase().trim();
     });
+  }
+
+  String _sortToApiValue(_SortOption sort) {
+    switch (sort) {
+      case _SortOption.newest:
+        return 'newest';
+      case _SortOption.oldest:
+        return 'oldest';
+      case _SortOption.alphabetical:
+        return 'alphabetical';
+    }
   }
 
   List<Bookmark> get _sortedBookmarks {
@@ -144,7 +155,7 @@ class _BookmarksScreenState extends State<BookmarksScreen> {
     if (_controller.error != null && _controller.bookmarks.isEmpty) {
       return _ErrorView(
         message: _controller.error!,
-        onRetry: _controller.refresh,
+        onRetry: () => _controller.refresh(sort: _sortToApiValue(_sortBy)),
       );
     }
 
@@ -177,7 +188,7 @@ class _BookmarksScreenState extends State<BookmarksScreen> {
     if (_controller.bookmarks.isEmpty) return const _EmptyView();
 
     return RefreshIndicator(
-      onRefresh: _controller.refresh,
+      onRefresh: () => _controller.refresh(sort: _sortToApiValue(_sortBy)),
       child: CustomScrollView(
         slivers: [
           SliverToBoxAdapter(
@@ -191,7 +202,8 @@ class _BookmarksScreenState extends State<BookmarksScreen> {
             SliverToBoxAdapter(
               child: _LoadMoreButton(
                 isLoading: _controller.isLoading,
-                onLoadMore: _controller.loadMore,
+                onLoadMore: () =>
+                    _controller.loadMore(sort: _sortToApiValue(_sortBy)),
               ),
             ),
           const SliverToBoxAdapter(child: SizedBox(height: 24)),
@@ -229,7 +241,10 @@ class _BookmarksScreenState extends State<BookmarksScreen> {
             displayType: _displayType,
             sortBy: _sortBy,
             onDisplayTypeChanged: (t) => setState(() => _displayType = t),
-            onSortChanged: (s) => setState(() => _sortBy = s),
+            onSortChanged: (s) => setState(() {
+              _sortBy = s;
+              _controller.fetchBookmarks(sort: _sortToApiValue(s));
+            }),
           ),
           Expanded(
             child: AnimatedBuilder(
