@@ -106,6 +106,7 @@ class _NavButton extends StatelessWidget {
               item.label,
               style: AppTextStyles.labelCaps.copyWith(
                 color: isActive ? AppColors.primary : AppColors.textSecondary,
+                letterSpacing: 0,
               ),
             ),
           ],
