@@ -187,6 +187,13 @@ class _BookmarksScreenState extends State<BookmarksScreen> {
               displayType: _displayType,
             ),
           ),
+          if (_controller.hasMore || _controller.isLoading)
+            SliverToBoxAdapter(
+              child: _LoadMoreButton(
+                isLoading: _controller.isLoading,
+                onLoadMore: _controller.loadMore,
+              ),
+            ),
           const SliverToBoxAdapter(child: SizedBox(height: 24)),
         ],
       ),
@@ -460,6 +467,48 @@ class _BookmarksSection extends StatelessWidget {
               ),
             ),
         ],
+      ),
+    );
+  }
+}
+
+// ── Load More ─────────────────────────────────────────────────────────────────
+
+class _LoadMoreButton extends StatelessWidget {
+  const _LoadMoreButton({required this.isLoading, required this.onLoadMore});
+
+  final bool isLoading;
+  final VoidCallback onLoadMore;
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(16, 12, 16, 0),
+      child: SizedBox(
+        width: double.infinity,
+        child: OutlinedButton(
+          onPressed: isLoading ? null : onLoadMore,
+          style: OutlinedButton.styleFrom(
+            backgroundColor: Colors.transparent,
+            side: const BorderSide(color: AppColors.borderGray),
+            padding: const EdgeInsets.symmetric(vertical: 12),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(6),
+            ),
+          ),
+          child: isLoading
+              ? const SizedBox(
+                  height: 18,
+                  width: 18,
+                  child: CircularProgressIndicator(strokeWidth: 2),
+                )
+              : Text(
+                  'Load More',
+                  style: AppTextStyles.body.copyWith(
+                    color: AppColors.textSecondary,
+                  ),
+                ),
+        ),
       ),
     );
   }
