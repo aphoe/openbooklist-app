@@ -216,29 +216,27 @@ class _BookmarksScreenState extends State<BookmarksScreen> {
             fontWeight: FontWeight.w700,
           ),
         ),
-        bottom: PreferredSize(
-          preferredSize: const Size.fromHeight(116),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Padding(
-                padding: const EdgeInsets.fromLTRB(16, 0, 16, 12),
-                child: SearchBox(controller: _searchController),
-              ),
-              _ControlsBar(
-                displayType: _displayType,
-                sortBy: _sortBy,
-                onDisplayTypeChanged: (t) => setState(() => _displayType = t),
-                onSortChanged: (s) => setState(() => _sortBy = s),
-              ),
-              Container(height: 1, color: AppColors.borderGray),
-            ],
-          ),
-        ),
       ),
-      body: AnimatedBuilder(
-        animation: _controller,
-        builder: (_, _) => _buildContent(),
+      body: Column(
+        children: [
+          Padding(
+            padding: const EdgeInsets.fromLTRB(16, 12, 16, 12),
+            child: SearchBox(controller: _searchController),
+          ),
+          _ControlsBar(
+            displayType: _displayType,
+            sortBy: _sortBy,
+            onDisplayTypeChanged: (t) => setState(() => _displayType = t),
+            onSortChanged: (s) => setState(() => _sortBy = s),
+          ),
+          Divider(height: 1, color: AppColors.borderGray),
+          Expanded(
+            child: AnimatedBuilder(
+              animation: _controller,
+              builder: (_, _) => _buildContent(),
+            ),
+          ),
+        ],
       ),
       floatingActionButton: FloatingActionButton(
         backgroundColor: AppColors.primary,
@@ -382,7 +380,7 @@ class _SortButton extends StatelessWidget {
       initialValue: current,
       onSelected: onChanged,
       shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(10),
+        borderRadius: BorderRadius.circular(4),
         side: const BorderSide(color: AppColors.borderGray),
       ),
       itemBuilder: (_) => const [
@@ -416,11 +414,7 @@ class _SortButton extends StatelessWidget {
               ),
             ),
             const SizedBox(width: 4),
-            const Icon(
-              Icons.expand_more,
-              size: 18,
-              color: AppColors.textMuted,
-            ),
+            const Icon(Icons.expand_more, size: 18, color: AppColors.textMuted),
           ],
         ),
       ),
@@ -449,14 +443,6 @@ class _RecentlySavedSection extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(
-            'Recently Saved',
-            style: AppTextStyles.body2.copyWith(
-              fontSize: 18,
-              color: AppColors.textBlack,
-            ),
-          ),
-          const SizedBox(height: 12),
           if (displayType == _DisplayType.grid)
             GridView.count(
               crossAxisCount: 2,
@@ -466,7 +452,10 @@ class _RecentlySavedSection extends StatelessWidget {
               shrinkWrap: true,
               physics: const NeverScrollableScrollPhysics(),
               children: bookmarks
-                  .map((b) => PortraitBookmarkCard(bookmark: b, onAction: onAction))
+                  .map(
+                    (b) =>
+                        PortraitBookmarkCard(bookmark: b, onAction: onAction),
+                  )
                   .toList(),
             )
           else
