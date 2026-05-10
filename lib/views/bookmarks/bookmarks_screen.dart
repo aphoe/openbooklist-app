@@ -6,6 +6,7 @@ import 'package:url_launcher/url_launcher.dart';
 
 import '../../components/bookmarks/add_bookmark_modal.dart';
 import '../../components/bookmarks/bookmark_card_action.dart';
+import '../../components/bookmarks/bookmark_detail_modal.dart';
 import '../../components/bookmarks/bottom_nav_bar.dart';
 import '../../components/bookmarks/landscape_bookmark_card.dart';
 import '../../components/bookmarks/portrait_bookmark_card.dart';
@@ -104,6 +105,8 @@ class _BookmarksScreenState extends State<BookmarksScreen> {
         if (uri != null && await canLaunchUrl(uri)) {
           await launchUrl(uri, mode: LaunchMode.externalApplication);
         }
+      case BookmarkCardAction.details:
+        if (mounted) await showBookmarkDetailModal(context, bookmark);
       case BookmarkCardAction.delete:
         if (mounted) await _confirmDelete(bookmark);
       default:
