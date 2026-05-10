@@ -490,7 +490,7 @@ class _LoadMoreButton extends StatelessWidget {
           onPressed: isLoading ? null : onLoadMore,
           style: OutlinedButton.styleFrom(
             backgroundColor: Colors.transparent,
-            side: const BorderSide(color: AppColors.borderGray),
+            side: const BorderSide(color: Colors.transparent),
             padding: const EdgeInsets.symmetric(vertical: 12),
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(6),
