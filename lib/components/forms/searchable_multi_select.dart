@@ -49,9 +49,16 @@ class _SearchableMultiSelectState extends State<SearchableMultiSelect> {
     if (_focusNode.hasFocus) {
       setState(() => _showSuggestions = true);
     } else {
-      Future.delayed(const Duration(milliseconds: 150), () {
-        if (mounted) setState(() => _showSuggestions = false);
-      });
+      setState(() => _showSuggestions = false);
+    }
+  }
+
+  void _toggleSuggestions() {
+    if (widget.isLoading) return;
+    setState(() => _showSuggestions = !_showSuggestions);
+    if (!_showSuggestions) {
+      _searchController.clear();
+      _focusNode.unfocus();
     }
   }
 
@@ -139,28 +146,43 @@ class _SearchableMultiSelectState extends State<SearchableMultiSelect> {
                 ),
                 const SizedBox(height: 8),
               ],
-              widget.isLoading
-                  ? const SizedBox(
-                      height: 18,
-                      width: 18,
-                      child: CircularProgressIndicator(strokeWidth: 2),
-                    )
-                  : TextField(
-                      controller: _searchController,
-                      focusNode: _focusNode,
-                      style: AppTextStyles.body.copyWith(
-                        color: AppColors.textBlack,
-                      ),
-                      decoration: InputDecoration(
-                        hintText: widget.hint,
-                        hintStyle: AppTextStyles.body.copyWith(
-                          color: AppColors.textMuted,
-                        ),
-                        isDense: true,
-                        border: InputBorder.none,
-                        contentPadding: EdgeInsets.zero,
+              Row(
+                children: [
+                  Expanded(
+                    child: widget.isLoading
+                        ? const SizedBox(
+                            height: 18,
+                            width: 18,
+                            child: CircularProgressIndicator(strokeWidth: 2),
+                          )
+                        : TextField(
+                            controller: _searchController,
+                            focusNode: _focusNode,
+                            style: AppTextStyles.body.copyWith(
+                              color: AppColors.textBlack,
+                            ),
+                            decoration: InputDecoration(
+                              hintText: widget.hint,
+                              hintStyle: AppTextStyles.body.copyWith(
+                                color: AppColors.textMuted,
+                              ),
+                              isDense: true,
+                              border: InputBorder.none,
+                              contentPadding: EdgeInsets.zero,
+                            ),
+                          ),
+                  ),
+                  if (_showSuggestions)
+                    GestureDetector(
+                      onTap: _toggleSuggestions,
+                      child: Icon(
+                        Icons.expand_less,
+                        size: 20,
+                        color: AppColors.textMuted,
                       ),
                     ),
+                ],
+              ),
             ],
           ),
         ),
