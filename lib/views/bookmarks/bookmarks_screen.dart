@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:toastification/toastification.dart';
 import 'package:url_launcher/url_launcher.dart';
 
+import '../../components/bookmarks/add_bookmark_modal.dart';
 import '../../components/bookmarks/bookmark_card_action.dart';
 import '../../components/bookmarks/bottom_nav_bar.dart';
 import '../../components/bookmarks/landscape_bookmark_card.dart';
@@ -257,7 +258,21 @@ class _BookmarksScreenState extends State<BookmarksScreen> {
       floatingActionButton: FloatingActionButton(
         backgroundColor: AppColors.primary,
         tooltip: 'New Bookmark',
-        onPressed: () {},
+        onPressed: () async {
+          await showModalBottomSheet<void>(
+            context: context,
+            isScrollControlled: true,
+            useSafeArea: true,
+            backgroundColor: AppColors.surface,
+            shape: const RoundedRectangleBorder(
+              borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+            ),
+            builder: (_) => AddBookmarkModal(
+              onSuccess: () =>
+                  _controller.refresh(sort: _sortToApiValue(_sortBy)),
+            ),
+          );
+        },
         child: const Icon(Icons.add, color: AppColors.white),
       ),
       bottomNavigationBar: BottomNavBar(
