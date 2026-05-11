@@ -13,6 +13,7 @@ class TextInput extends StatelessWidget {
     this.prefixIcon,
     this.textInputAction,
     this.onFieldSubmitted,
+    this.maxLines = 1,
   });
 
   final String label;
@@ -23,6 +24,7 @@ class TextInput extends StatelessWidget {
   final Widget? prefixIcon;
   final TextInputAction? textInputAction;
   final void Function(String)? onFieldSubmitted;
+  final int maxLines;
 
   @override
   Widget build(BuildContext context) {
@@ -42,6 +44,8 @@ class TextInput extends StatelessWidget {
           keyboardType: keyboardType,
           textInputAction: textInputAction,
           onFieldSubmitted: onFieldSubmitted,
+          maxLines: maxLines,
+          minLines: maxLines > 1 ? null : 1,
           style: AppTextStyles.body.copyWith(color: AppColors.textBlack),
           decoration: InputDecoration(
             hintText: hint,
