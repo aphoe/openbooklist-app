@@ -7,6 +7,7 @@ import 'package:url_launcher/url_launcher.dart';
 
 import '../../components/bookmarks/add_bookmark_modal.dart';
 import '../../components/bookmarks/bookmark_card_action.dart';
+import '../settings/settings_screen.dart';
 import '../../components/bookmarks/bookmark_detail_modal.dart';
 import '../../components/bookmarks/edit_bookmark_modal.dart';
 import '../../components/bookmarks/set_image_modal.dart';
@@ -396,7 +397,17 @@ class _BookmarksScreenState extends State<BookmarksScreen> {
       ),
       bottomNavigationBar: BottomNavBar(
         selectedIndex: _navIndex,
-        onTap: (i) => setState(() => _navIndex = i),
+        onTap: (i) {
+          if (i == 3) {
+            Navigator.of(context).push(
+              MaterialPageRoute(
+                builder: (_) => const SettingsScreen(),
+              ),
+            );
+          } else {
+            setState(() => _navIndex = i);
+          }
+        },
       ),
     );
   }
