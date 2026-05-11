@@ -1,4 +1,7 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
+import 'package:share_handler/share_handler.dart';
 import 'package:toastification/toastification.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -34,6 +37,7 @@ class BookmarksScreen extends StatefulWidget {
 class _BookmarksScreenState extends State<BookmarksScreen> {
   late final BookmarksController _controller;
   final _searchController = TextEditingController();
+  StreamSubscription<SharedMedia>? _shareSubscription;
   String _searchQuery = '';
   int _navIndex = 0;
   _DisplayType _displayType = _DisplayType.list;
@@ -45,13 +49,50 @@ class _BookmarksScreenState extends State<BookmarksScreen> {
     _controller = BookmarksController();
     _controller.fetchBookmarks(sort: _sortToApiValue(_sortBy));
     _searchController.addListener(_onSearchChanged);
+    WidgetsBinding.instance.addPostFrameCallback((_) => _initShareHandling());
   }
 
   @override
   void dispose() {
+    _shareSubscription?.cancel();
     _controller.dispose();
     _searchController.dispose();
     super.dispose();
+  }
+
+  Future<void> _initShareHandling() async {
+    final handler = ShareHandlerPlatform.instance;
+
+    final initial = await handler.getInitialSharedMedia();
+    if (initial?.content != null && mounted) {
+      _openAddModalWithUrl(initial!.content!);
+    }
+
+    _shareSubscription = handler.sharedMediaStream.listen((media) {
+      if (media.content != null && mounted) {
+        _openAddModalWithUrl(media.content!);
+      }
+    });
+  }
+
+  void _openAddModalWithUrl(String url) {
+    final trimmed = url.trim();
+    final uri = Uri.tryParse(trimmed);
+    if (uri == null || !uri.scheme.startsWith('http')) return;
+
+    showModalBottomSheet<void>(
+      context: context,
+      isScrollControlled: true,
+      useSafeArea: true,
+      backgroundColor: AppColors.surface,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+      ),
+      builder: (_) => AddBookmarkModal(
+        initialUrl: trimmed,
+        onSuccess: () => _controller.refresh(sort: _sortToApiValue(_sortBy)),
+      ),
+    );
   }
 
   void _onSearchChanged() {

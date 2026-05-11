@@ -13,9 +13,10 @@ import '../forms/searchable_select.dart';
 import '../forms/text_input.dart';
 
 class AddBookmarkModal extends StatefulWidget {
-  const AddBookmarkModal({super.key, required this.onSuccess});
+  const AddBookmarkModal({super.key, required this.onSuccess, this.initialUrl});
 
   final VoidCallback onSuccess;
+  final String? initialUrl;
 
   @override
   State<AddBookmarkModal> createState() => _AddBookmarkModalState();
@@ -34,6 +35,9 @@ class _AddBookmarkModalState extends State<AddBookmarkModal> {
     super.initState();
     _controller = AddBookmarkController();
     _controller.fetchMeta();
+    if (widget.initialUrl != null) {
+      _urlController.text = widget.initialUrl!;
+    }
   }
 
   @override
