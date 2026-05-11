@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:toastification/toastification.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -15,6 +13,7 @@ import '../../components/bookmarks/portrait_bookmark_card.dart';
 import '../../components/bookmarks/search_box.dart';
 import '../../constants/constants.dart';
 import '../../controllers/bookmarks_controller.dart';
+import '../../controllers/delete_bookmark_controller.dart';
 import '../../controllers/refetch_metadata_controller.dart';
 import '../../data/models/bookmark.dart';
 import '../../services/display_service.dart';
@@ -167,13 +166,33 @@ class _BookmarksScreenState extends State<BookmarksScreen> {
         ],
       ),
     );
-    if (confirmed == true && mounted) {
-      log('TODO: delete bookmark ${bookmark.id}');
+    if (confirmed != true || !mounted) return;
+
+    showDialog<void>(
+      context: context,
+      barrierDismissible: false,
+      builder: (_) => const _LoadingDialog(message: 'Deleting bookmark…'),
+    );
+
+    final error = await DeleteBookmarkController().call(bookmark.id);
+
+    if (!mounted) return;
+    Navigator.of(context).pop();
+
+    if (error == null) {
       DisplayService.showToast(
         context,
-        title: 'Not Connected',
-        message: 'Delete API not yet connected.',
-        type: ToastificationType.warning,
+        title: 'Bookmark Deleted',
+        message: '"$label" has been deleted.',
+        type: ToastificationType.success,
+      );
+      await _controller.refresh(sort: _sortToApiValue(_sortBy));
+    } else {
+      DisplayService.showToast(
+        context,
+        title: 'Delete Failed',
+        message: error,
+        type: ToastificationType.error,
       );
     }
   }

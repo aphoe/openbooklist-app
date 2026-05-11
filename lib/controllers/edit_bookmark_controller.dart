@@ -28,7 +28,6 @@ class EditBookmarkController extends ChangeNotifier {
   String? get submitError => _submitError;
 
   Future<void> fetchMeta() async {
-    debugPrint('### EditBookmarkController.fetchMeta: called');
     _isLoadingMeta = true;
     _metaError = null;
     notifyListeners();
@@ -36,7 +35,6 @@ class EditBookmarkController extends ChangeNotifier {
     try {
       final baseUrl = await _storage.read(key: 'baseUrl');
       final token = await _storage.read(key: 'authToken');
-      debugPrint('### EditBookmarkController: baseUrl=$baseUrl hasToken=${token != null}');
       if (baseUrl == null || token == null) {
         _metaError = 'Not authenticated.';
         return;
@@ -61,31 +59,24 @@ class EditBookmarkController extends ChangeNotifier {
       final catResponse = results[0];
       final tagResponse = results[1];
 
-      debugPrint('### EditBookmarkController: cat=${catResponse.statusCode} tag=${tagResponse.statusCode}');
-      debugPrint('### EditBookmarkController: catBody=${catResponse.body.substring(0, catResponse.body.length.clamp(0, 300))}');
-      debugPrint('### EditBookmarkController: tagBody=${tagResponse.body.substring(0, tagResponse.body.length.clamp(0, 300))}');
-
       if (catResponse.statusCode == 200) {
         final decoded = jsonDecode(catResponse.body);
-        debugPrint('### EditBookmarkController: catDecoded runtimeType=${decoded.runtimeType}');
         if (decoded is Map<String, dynamic>) {
           _categories = CategoryOption.listFromJson(decoded);
         }
       }
       if (tagResponse.statusCode == 200) {
         final decoded = jsonDecode(tagResponse.body);
-        debugPrint('### EditBookmarkController: tagDecoded runtimeType=${decoded.runtimeType}');
         if (decoded is Map<String, dynamic>) {
           _tags = TagOption.listFromJson(decoded);
         }
       }
-      debugPrint('### EditBookmarkController: loaded ${_categories.length} cats, ${_tags.length} tags');
       if (catResponse.statusCode != 200 || tagResponse.statusCode != 200) {
         _metaError =
             'Could not load form options. You can still save changes.';
       }
     } catch (e, st) {
-      debugPrint('### EditBookmarkController.fetchMeta ERROR: $e\n$st');
+      log('EditBookmarkController.fetchMeta: $e\n$st');
       _metaError = 'Could not connect to server.';
     } finally {
       _isLoadingMeta = false;
